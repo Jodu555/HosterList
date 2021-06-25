@@ -17,13 +17,13 @@ const hosterSchema = Joi.object({
 });
 
 const serviceSchema = Joi.object({
-	hoster_ID: Joi.string().min(3).max(30),
+	hoster_UUID: Joi.string().min(35).max(37),
     type: Joi.string(),
     name: Joi.string(),
     virtualisierung: Joi.string(),
     neofetch_data: Joi.string(),
     swap_RAM: Joi.string(),
-    upgrade_possibility: Joi.string(),
+    upgrade_possibillity: Joi.string(),
     uptime_percentage: Joi.string(),
     testPeriod: Joi.string(),
 });

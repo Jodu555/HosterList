@@ -40,6 +40,10 @@ class Database {
 	get getHoster() {
 		return this.hosterDatabase;
 	}
+
+	get getService() {
+		return this.serviceDatabase;
+	}
 }
 
 module.exports = Database;
