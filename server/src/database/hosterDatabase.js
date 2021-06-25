@@ -17,6 +17,7 @@ class hosterDatabase {
 			],
 			(error, results, fields) => {
 				if (error) {
+					throw error;
 					this.database.reconnect();
 					this.createHoster(hoster);
 				}
@@ -53,8 +54,9 @@ class hosterDatabase {
 
 			this.connection.query(query, values, (error, results, fields) => {
 				if (error) {
+					throw error;
 					this.database.reconnect();
-					this.updatehoster(search, hoster);
+					this.updateHoster(search, hoster);
 				}
 			});
 			return await this.getHoster({ uuid: uuid });
@@ -86,7 +88,7 @@ class hosterDatabase {
 					if (error) {
 						throw error;
 						this.database.reconnect();
-						this.gethoster(search);
+						this.getHoster(search);
 					}
 					await results.forEach((result) => {
 						data.push(result);
@@ -94,6 +96,20 @@ class hosterDatabase {
 					resolve(data);
 				}
 			);
+		});
+	}
+
+	async deleteHoster(search) {
+		let query = 'DELETE FROM ' + TABLE_NAME + ' WHERE ';
+		const part = queryPartGeneration(search);
+		query += part.query;
+		const values = part.values;
+		this.connection.query(query, values, (error, results, fields) => {
+			if (error) {
+				throw error;
+				this.database.reconnect();
+				this.deleteHoster(search);
+			}
 		});
 	}
 }

@@ -48,9 +48,24 @@ const list = async (req, res, next) => {
 	res.json(hosters);
 };
 
+const remove = async (req, res, next) => {
+	const id = req.params.id;
+	const result = await database.getHoster.getHoster({
+		UUID: id,
+		unique: true,
+	});
+	if(result.length > 0) {
+		await database.getHoster.deleteHoster({UUID: id});
+		res.json(jsonSuccess('Hoster successfully deleted!'));
+	} else {
+		res.json(jsonError('Hoster does not exist!'));
+	}
+};
+
 module.exports = {
 	setDatabase,
 	create,
 	update,
 	list,
+	remove
 };
