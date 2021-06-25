@@ -2,6 +2,8 @@ const { jsonSuccess, jsonError } = require('./jsonMessages');
 
 const tokens = new Map();
 
+tokens.set('DEV-TOKEN-SECRET', {})
+
 function addToken(token, user) {
 	tokens.forEach((value, key) => {
         if(JSON.stringify(value) == JSON.stringify(user)) {
