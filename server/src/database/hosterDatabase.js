@@ -9,7 +9,6 @@ class hosterDatabase {
 	}
 
 	createHoster(hoster) {
-        console.log(hoster);
 		this.connection.query(
 			'INSERT INTO ' + TABLE_NAME + ' VALUES (?, ?)',
 			[

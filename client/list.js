@@ -4,7 +4,7 @@ addHosterForm.addEventListener('submit', (event) => {
 	event.preventDefault();
 	var data = new FormData(addHosterForm);
 	fetch(API_URL + 'hoster/create', {
-		method: 'POST', // or 'PUT'
+		method: 'POST',
 		headers: {
 			'auth-token': 'DEV-TOKEN-SECRET',
 			'Content-Type': 'application/json',
@@ -21,34 +21,70 @@ function formDataToObject(formData) {
     return obj;
 }
 
-$('#table').bootstrapTable({
-	search: true,
-	columns: [
-		{
-			sortable: true,
-			field: 'id',
-			title: 'ID',
+loadHosters();
+
+function deleteHoster(uuid) {
+    console.log('Delete Hoster: ' + uuid);
+}
+
+async function loadHosters() {
+    const response = await fetch(API_URL + 'hoster/list', {
+		method: 'GET',
+		headers: {
+			'auth-token': 'DEV-TOKEN-SECRET',
 		},
-		{
-			field: 'name',
-			title: 'Name',
-		},
-		{
-			sortable: true,
-			field: 'tested_services',
-			title: 'Tested Services',
-		},
-	],
-	data: [
-		{
-			id: '1738',
-			name: '<a href="hoster.html?id=934">Living-Bots</a>',
-			tested_services: '7',
-		},
-		{
-			id: '1738',
-			name: '<a href="hoster.html?id=934">Living-Bots</a>',
-			tested_services: '7',
-		},
-	],
-});
+	});
+    const json = await response.json();
+    let i = 0;
+    json.forEach(hoster => {
+        i++;
+        hoster.id = i;
+        hoster.name = `<a href="hoster.html?uuid=${hoster.UUID}">${hoster.name}</a>`
+        hoster.services = -1;
+        hoster.delete = `<button class="btn btn-danger" onclick="deleteHoster('${hoster.UUID}')">Delete</button>`
+    });
+    loadTable(json)
+}
+
+function loadTable(data) {
+    $('#table').bootstrapTable({
+        search: true,
+        columns: [
+            {
+                sortable: true,
+                field: 'id',
+                title: 'ID',
+            },
+            {
+                field: 'name',
+                title: 'Name',
+            },
+            {
+                sortable: true,
+                field: 'services',
+                title: 'Services',
+            },
+            {
+                field: 'delete',
+                title: 'Delete',
+            },
+        ],
+        data,
+    });
+}
+
+
+// [
+//     {
+//         id: '1738',
+//         name: '<a href="hoster.html?id=934">Living-Bots</a>',
+//         tested_services: '7',
+//     },
+//     {
+//         id: '1738',
+//         name: '<a href="hoster.html?id=934">Living-Bots</a>',
+//         tested_services: '7',
+//     },
+// ]
+
+
