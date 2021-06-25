@@ -24,7 +24,12 @@ function formDataToObject(formData) {
 loadHosters();
 
 function deleteHoster(uuid) {
-    console.log('Delete Hoster: ' + uuid);
+    fetch(API_URL + 'hoster/delete/' + uuid, {
+		method: 'GET',
+		headers: {
+			'auth-token': 'DEV-TOKEN-SECRET',
+		},
+	});
 }
 
 async function loadHosters() {
@@ -72,19 +77,5 @@ function loadTable(data) {
         data,
     });
 }
-
-
-// [
-//     {
-//         id: '1738',
-//         name: '<a href="hoster.html?id=934">Living-Bots</a>',
-//         tested_services: '7',
-//     },
-//     {
-//         id: '1738',
-//         name: '<a href="hoster.html?id=934">Living-Bots</a>',
-//         tested_services: '7',
-//     },
-// ]
 
 
