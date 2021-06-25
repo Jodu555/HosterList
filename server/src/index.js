@@ -23,6 +23,7 @@ app.use(helmet());
 app.use(express.json());
 
 app.use('/auth', auth);
+//TODO: Add auth middleware here
 app.use('/hoster', hoster);
 app.use('/service', service);
 
