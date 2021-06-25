@@ -9,7 +9,6 @@ class serviceDatabase {
 	}
 
 	createService(service) {
-        console.log(service);
 		this.connection.query(
 			'INSERT INTO ' + TABLE_NAME + ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			[

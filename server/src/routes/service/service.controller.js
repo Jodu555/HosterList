@@ -18,13 +18,13 @@ const create = async (req, res, next) => {
 			unique: true,
 		});
 		if (result.length == 0) {
-			const obj = jsonSuccess('Hoster Created');
+			const obj = jsonSuccess('Service Created');
 			service.uuid = v4();
 			await database.getService.createService(service);
 			obj.service = service;
 			res.json(obj);
 		} else {
-			res.json(jsonError('Hoster name already exists'));
+			res.json(jsonError('Service already exists'));
 		}
 	}
 };
@@ -44,8 +44,8 @@ const update = async (req, res, next) => {
 };
 
 const list = async (req, res, next) => {
-	// const hosters = await database.getService.getService({});
-	// res.json(hosters);
+	const service = await database.getService.getService({});
+	res.json(service);
 };
 
 module.exports = {
