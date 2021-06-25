@@ -1,5 +1,5 @@
 const { jsonSuccess, jsonError } = require('../../utils/jsonMessages');
-const { serviceSchema } = require('../../database/schemas');
+const { serviceSchema, serviceUpdateSchema } = require('../../database/schemas');
 const { v4 } = require('uuid');
 
 let database;
@@ -12,16 +12,16 @@ const create = async (req, res, next) => {
 	if (validation.error) {
 		res.json(jsonError(validation.error.details[0].message));
 	} else {
-		const hoster = validation.value;
+		const service = validation.value;
 		const result = await database.getService.getService({
-			...hoster,
+			...service,
 			unique: true,
 		});
 		if (result.length == 0) {
 			const obj = jsonSuccess('Hoster Created');
-			hoster.uuid = v4();
-			await database.getService.createHoster(hoster);
-			obj.hoster = hoster;
+			service.uuid = v4();
+			await database.getService.createService(service);
+			obj.service = service;
 			res.json(obj);
 		} else {
 			res.json(jsonError('Hoster name already exists'));
@@ -31,21 +31,21 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
 	const id = req.params.id;
-	const validation = serviceSchema.validate(req.body);
+	const validation = serviceUpdateSchema.validate(req.body);
 	if (validation.error) {
 		res.json(jsonError(validation.error.details[0].message));
 	} else {
-		const hoster = validation.value;
-		const obj = jsonSuccess('Hoster Updated');
-		await database.getService.updateHoster({ UUID: id, unique: true }, hoster);
-		obj.hoster = hoster;
+		const service = validation.value;
+		const obj = jsonSuccess('Service Updated');
+		await database.getService.updateService({ UUID: id, unique: true }, service);
+		obj.service = service;
 		res.json(obj);
 	}
 };
 
 const list = async (req, res, next) => {
-	const hosters = await database.getService.getService({});
-	res.json(hosters);
+	// const hosters = await database.getService.getService({});
+	// res.json(hosters);
 };
 
 module.exports = {

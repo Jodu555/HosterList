@@ -13,10 +13,22 @@ const userLoginSchema = Joi.object({
 }).xor('username', 'email');
 
 const hosterSchema = Joi.object({
-	name: Joi.string().min(3).max(30),
+	name: Joi.string().min(3).max(30).required(),
 });
 
 const serviceSchema = Joi.object({
+	hoster_UUID: Joi.string().min(35).max(37).required(),
+    type: Joi.string().required(),
+    name: Joi.string().required(),
+    virtualisierung: Joi.string().required(),
+    neofetch_data: Joi.string().required(),
+    swap_RAM: Joi.string().required(),
+    upgrade_possibillity: Joi.string().required(),
+    uptime_percentage: Joi.string().required(),
+    testPeriod: Joi.string().required(),
+});
+
+const serviceUpdateSchema = Joi.object({
 	hoster_UUID: Joi.string().min(35).max(37),
     type: Joi.string(),
     name: Joi.string(),
@@ -32,5 +44,6 @@ module.exports = {
     userRegisterSchema,
     userLoginSchema,
     hosterSchema,
-    serviceSchema
+    serviceSchema,
+    serviceUpdateSchema
 };

@@ -11,13 +11,22 @@ class serviceDatabase {
 	createService(service) {
         console.log(service);
 		this.connection.query(
-			'INSERT INTO ' + TABLE_NAME + ' VALUES (?, ?)',
+			'INSERT INTO ' + TABLE_NAME + ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			[
 				service.uuid,
-				service.name
+				service.hoster_UUID,
+				service.type,
+				service.name,
+				service.virtualisierung,
+				service.neofetch_data,
+				service.swap_RAM,
+				service.upgrade_possibillity,
+				service.uptime_percentage,
+				service.testPeriod,
 			],
 			(error, results, fields) => {
 				if (error) {
+					throw error;
 					this.database.reconnect();
 					this.createService(service);
 				}
@@ -45,7 +54,7 @@ class serviceDatabase {
 			service.update = true;
 
 			let query = 'UPDATE ' + TABLE_NAME + ' SET ';
-			const part = queryPartGeneration(Service);
+			const part = queryPartGeneration(service);
 			query += part.query;
 			query += ' WHERE UUID = ?';
 
@@ -62,7 +71,7 @@ class serviceDatabase {
 		} catch (error) {
 			const errormsg = `Service Update Failed: searchTerm: ${JSON.stringify(
 				search
-			)} Update: ${JSON.stringify(Service)}  Error: ${error.message}`;
+			)} Update: ${JSON.stringify(service)}  Error: ${error.message}`;
 			throw new Error(errormsg);
 		}
 	}
