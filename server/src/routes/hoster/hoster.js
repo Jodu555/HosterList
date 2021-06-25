@@ -9,7 +9,6 @@ function setDatabase(_database) {
     controller.setDatabase(database);
 }
 
-//TODO: Add the route to delete a Hoster
 router.get('/', (req, res) => {
 	res.json(jsonSuccess('Hoster-Router works just fine'));
 });

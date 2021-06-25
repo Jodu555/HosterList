@@ -105,6 +105,20 @@ class serviceDatabase {
 			);
 		});
 	}
+
+	async deleteService(search) {
+		let query = 'DELETE FROM ' + TABLE_NAME + ' WHERE ';
+		const part = queryPartGeneration(search);
+		query += part.query;
+		const values = part.values;
+		this.connection.query(query, values, (error, results, fields) => {
+			if (error) {
+				throw error;
+				this.database.reconnect();
+				this.deleteService(search);
+			}
+		});
+	}
 }
 
 module.exports = serviceDatabase;

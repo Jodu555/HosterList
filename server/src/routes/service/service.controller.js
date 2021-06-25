@@ -48,9 +48,24 @@ const list = async (req, res, next) => {
 	res.json(service);
 };
 
+const remove = async (req, res, next) => {
+	const id = req.params.id;
+	const result = await database.getService.getService({
+		UUID: id,
+		unique: true,
+	});
+	if(result.length > 0) {
+		await database.getService.deleteService({UUID: id});
+		res.json(jsonSuccess('Service successfully deleted!'));
+	} else {
+		res.json(jsonError('Service does not exist!'));
+	}
+};
+
 module.exports = {
 	setDatabase,
 	create,
 	update,
 	list,
+	remove
 };
