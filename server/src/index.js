@@ -8,6 +8,7 @@ const { router: service, setDatabase: service_setDatabase } = require('./routes/
 const { jsonSuccess, jsonError } = require('./utils/jsonMessages');
 const dotenv = require('dotenv').config();
 const Database = require('./database/Database');
+const authManager = require('./utils/authManager');
 
 const database = new Database();
 database.connect();
@@ -23,9 +24,8 @@ app.use(helmet());
 app.use(express.json());
 
 app.use('/auth', auth);
-//TODO: Add auth middleware here
-app.use('/hoster', hoster);
-app.use('/service', service);
+app.use('/hoster', authManager.authentication, hoster);
+app.use('/service', authManager.authentication, service);
 
 app.get('/', (req, res) => {
 	res.json(jsonSuccess('Basic Auth API works just fine!'));

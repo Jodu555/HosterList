@@ -2,6 +2,7 @@ const { jsonSuccess, jsonError } = require('../../utils/jsonMessages');
 const { userRegisterSchema, userLoginSchema } = require('../../database/schemas');
 const { sendVerificationMessage } = require('../../utils/mailer')
 const { v4 } = require('uuid');
+const authManager = require('../../utils/authManager');
 
 let database;
 const setDatabase = (_database) => {
@@ -45,8 +46,11 @@ const login = async (req, res, next) => {
         const user = validation.value;
         const result = await database.getAuth.getUser({...user, unique: true});
         if(result.length > 0) {
-            res.json(jsonSuccess('Successfully logged In'));
-            //TODO: send back an auth token
+            const obj = jsonSuccess('Successfully logged In');
+            const token = v4();
+            obj.token = token;
+            authManager.addToken(token, user)
+            res.json(obj);
         } else {
             const value = user.username ? 'username' : 'email';
             res.json(jsonError('Invalid ' + value + ' and password'))
