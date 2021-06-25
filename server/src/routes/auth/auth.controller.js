@@ -1,6 +1,6 @@
-const { jsonSuccess, jsonError } = require('../utils/jsonMessages');
-const { userRegisterSchema, userLoginSchema } = require('../database/schemas');
-const { sendVerificationMessage } = require('../utils/mailer')
+const { jsonSuccess, jsonError } = require('../../utils/jsonMessages');
+const { userRegisterSchema, userLoginSchema } = require('../../database/schemas');
+const { sendVerificationMessage } = require('../../utils/mailer')
 const { v4 } = require('uuid');
 
 let database;

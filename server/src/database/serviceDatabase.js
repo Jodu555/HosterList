@@ -1,51 +1,51 @@
 const { queryPartGeneration, removeKeyFromObject } = require('./utils');
 
-const TABLE_NAME = 'hoster';
-class hosterDatabase {
+const TABLE_NAME = 'services';
+class serviceDatabase {
 	constructor(database, connection) {
 		this.database = database;
 		this.connection = connection;
-		console.log('Hoster Database Initialized');
+		console.log('Service Database Initialized');
 	}
 
-	createHoster(hoster) {
-        console.log(hoster);
+	createService(service) {
+        console.log(service);
 		this.connection.query(
 			'INSERT INTO ' + TABLE_NAME + ' VALUES (?, ?)',
 			[
-				hoster.uuid,
-				hoster.name
+				service.uuid,
+				service.name
 			],
 			(error, results, fields) => {
 				if (error) {
 					this.database.reconnect();
-					this.createHoster(hoster);
+					this.createService(service);
 				}
 			}
 		);
 	}
 
 	//TODO: Update Users function (to update multiple users)
-	async updateHoster(search, hoster) {
+	async updateService(search, service) {
 		try {
-			removeKeyFromObject(hoster, 'uuid');
+			removeKeyFromObject(service, 'uuid');
 
-			if (!Object.keys(hoster).length > 0) {
-				throw new Error('Invalid hoster update Object');
+			if (!Object.keys(service).length > 0) {
+				throw new Error('Invalid Service update Object');
 			}
 
 			let uuid = '';
 			if (!search.uuid) {
-				const searchresult = await this.getHoster(search);
+				const searchresult = await this.getService(search);
 				uuid = searchresult[0].UUID;
 			} else {
 				uuid = search.uuid;
 			}
 
-			hoster.update = true;
+			service.update = true;
 
 			let query = 'UPDATE ' + TABLE_NAME + ' SET ';
-			const part = queryPartGeneration(hoster);
+			const part = queryPartGeneration(Service);
 			query += part.query;
 			query += ' WHERE UUID = ?';
 
@@ -55,19 +55,19 @@ class hosterDatabase {
 			this.connection.query(query, values, (error, results, fields) => {
 				if (error) {
 					this.database.reconnect();
-					this.updatehoster(search, hoster);
+					this.updateService(search, service);
 				}
 			});
-			return await this.getHoster({ uuid: uuid });
+			return await this.getService({ uuid: uuid });
 		} catch (error) {
-			const errormsg = `hoster Update Failed: searchTerm: ${JSON.stringify(
+			const errormsg = `Service Update Failed: searchTerm: ${JSON.stringify(
 				search
-			)} Update: ${JSON.stringify(hoster)}  Error: ${error.message}`;
+			)} Update: ${JSON.stringify(Service)}  Error: ${error.message}`;
 			throw new Error(errormsg);
 		}
 	}
 
-	async getHoster(search) {
+	async getService(search) {
         
 		let query = 'SELECT * FROM ' + TABLE_NAME + ' WHERE ';
 		const part = queryPartGeneration(search);
@@ -87,7 +87,7 @@ class hosterDatabase {
 					if (error) {
 						throw error;
 						this.database.reconnect();
-						this.gethoster(search);
+						this.getService(search);
 					}
 					await results.forEach((result) => {
 						data.push(result);
@@ -99,4 +99,4 @@ class hosterDatabase {
 	}
 }
 
-module.exports = hosterDatabase;
+module.exports = serviceDatabase;

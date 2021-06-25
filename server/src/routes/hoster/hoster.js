@@ -1,6 +1,6 @@
 const express = require('express');
 const controller = require('./hoster.controller');
-const { jsonSuccess } = require('../utils/jsonMessages');
+const { jsonSuccess } = require('../../utils/jsonMessages');
 const router = express.Router();
 
 let database;
