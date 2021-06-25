@@ -12,9 +12,9 @@ function setDatabase(_database) {
 router.get('/', (req, res) => {
 	res.json(jsonSuccess('Hoster-Router works just fine'));
 });
-router.post('/create', controller.register);
-router.update('/update', controller.login);
-router.get('/list', controller.emailValidation);
+router.post('/create', controller.create);
+router.post('/update/:id', controller.update);
+router.get('/list', controller.list);
 
 module.exports = {
     router,

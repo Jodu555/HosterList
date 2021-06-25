@@ -1,4 +1,7 @@
 const { queryPartGeneration, removeKeyFromObject } = require('./utils');
+
+const TABLE_NAME = 'hoster';
+
 class hosterDatabase {
 	constructor(database, connection) {
 		this.database = database;
@@ -7,20 +10,17 @@ class hosterDatabase {
 	}
 
 	createHoster(hoster) {
+        console.log(hoster);
 		this.connection.query(
-			'INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?)',
+			'INSERT INTO ' + TABLE_NAME + ' VALUES (?, ?)',
 			[
 				hoster.uuid,
-				hoster.name,
-				hoster.email,
-				user.password,
-				user.verified ? user.verified : 'false',
-				user.verificationToken,
+				hoster.name
 			],
 			(error, results, fields) => {
 				if (error) {
 					this.database.reconnect();
-					this.createUser(user);
+					this.createHoster(hoster);
 				}
 			}
 		);
@@ -37,7 +37,7 @@ class hosterDatabase {
 
 			let uuid = '';
 			if (!search.uuid) {
-				const searchresult = await this.gethoster(search);
+				const searchresult = await this.getHoster(search);
 				uuid = searchresult[0].UUID;
 			} else {
 				uuid = search.uuid;
@@ -45,7 +45,7 @@ class hosterDatabase {
 
 			hoster.update = true;
 
-			let query = 'UPDATE accounts SET ';
+			let query = 'UPDATE ' + TABLE_NAME + ' SET ';
 			const part = queryPartGeneration(hoster);
 			query += part.query;
 			query += ' WHERE UUID = ?';
@@ -59,7 +59,7 @@ class hosterDatabase {
 					this.updatehoster(search, hoster);
 				}
 			});
-			return await this.gethoster({ uuid: uuid });
+			return await this.getHoster({ uuid: uuid });
 		} catch (error) {
 			const errormsg = `hoster Update Failed: searchTerm: ${JSON.stringify(
 				search
@@ -69,10 +69,16 @@ class hosterDatabase {
 	}
 
 	async getHoster(search) {
-		let query = 'SELECT * FROM accounts WHERE ';
+        
+		let query = 'SELECT * FROM ' + TABLE_NAME + ' WHERE ';
 		const part = queryPartGeneration(search);
 		query += part.query;
 		const values = part.values;
+
+        if(Object.keys(search) == 0) {
+            query = "SELECT * FROM " + TABLE_NAME;
+        }
+
 		return new Promise(async (resolve, reject) => {
 			await this.connection.query(
 				query,
@@ -94,4 +100,4 @@ class hosterDatabase {
 	}
 }
 
-module.exports = authDatabase;
+module.exports = hosterDatabase;

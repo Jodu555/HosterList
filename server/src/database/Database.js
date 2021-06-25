@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const AuthDatabase = require('./authDatabase');
+const HosterDatabase = require('./hosterDatabase');
 class Database {
 	connection = null;
 
@@ -15,6 +16,7 @@ class Database {
 		this.connection.connect();
 		//Setup all databases here
 		this.authDatabase = new AuthDatabase(this, this.connection);
+		this.hosterDatabase = new HosterDatabase(this, this.connection);
 	}
 
 	disconnect() {
@@ -31,6 +33,10 @@ class Database {
 
 	get getAuth() {
 		return this.authDatabase;
+	}
+
+	get getHoster() {
+		return this.hosterDatabase;
 	}
 }
 
