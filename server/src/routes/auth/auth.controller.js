@@ -25,6 +25,8 @@ const register = async (req, res, next) => {
             const token = generateVerificationToken();
             user.verificationToken = token;
             user.uuid = v4();
+            console.log(user);
+            user.verified = user.verified ? user.verified : 'false';
             await database.getAuth.create(user);
             sendVerificationMessage(user.username, user.email, token);
     
