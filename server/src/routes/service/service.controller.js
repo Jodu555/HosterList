@@ -45,7 +45,9 @@ const update = async (req, res, next) => {
 
 const list = async (req, res, next) => {
 	const service = await database.getService.get({});
-	res.json(service);
+	const obj = jsonSuccess('Services Loaded');
+	obj.services = service;
+	res.json(obj);
 };
 
 const remove = async (req, res, next) => {

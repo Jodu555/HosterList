@@ -45,7 +45,25 @@ const update = async (req, res, next) => {
 
 const list = async (req, res, next) => {
 	const hosters = await database.getHoster.get({});
-	res.json(hosters);
+	const obj = jsonSuccess('Hoster Updated');
+	obj.hosters = hosters;
+	res.json(obj);
+};
+
+const get = async (req, res, next) => {
+	const id = req.params.id;
+	const hosters = await database.getHoster.get({
+		UUID: id,
+		unique: true,
+	});
+
+	if (hosters.length > 0) {
+		const obj = jsonSuccess('Hoster Found');
+		obj.hoster = hosters[0];
+		res.json(obj);
+	} else {
+		res.json(jsonError('Hoster does not exist!'));
+	}
 };
 
 const remove = async (req, res, next) => {
@@ -54,11 +72,11 @@ const remove = async (req, res, next) => {
 		UUID: id,
 		unique: true,
 	});
-	if(result.length > 0) {
-		await database.getHoster.delete({UUID: id});
+	if (result.length > 0) {
+		await database.getHoster.delete({ UUID: id });
 		res.json(jsonSuccess('Hoster successfully deleted!'));
 	} else {
-		res.json(jsonError('Hoster does not exist!'));
+		
 	}
 };
 
@@ -67,5 +85,6 @@ module.exports = {
 	create,
 	update,
 	list,
-	remove
+	get,
+	remove,
 };

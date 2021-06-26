@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
 router.post('/create', controller.create);
 router.post('/update/:id', controller.update);
 router.get('/list', controller.list);
+router.get('/get/:id', controller.get);
 router.get('/delete/:id', controller.remove);
 
 module.exports = {
