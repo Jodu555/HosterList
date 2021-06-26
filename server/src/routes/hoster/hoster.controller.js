@@ -13,14 +13,14 @@ const create = async (req, res, next) => {
 		res.json(jsonError(validation.error.details[0].message));
 	} else {
 		const hoster = validation.value;
-		const result = await database.getHoster.getHoster({
+		const result = await database.getHoster.get({
 			...hoster,
 			unique: true,
 		});
 		if (result.length == 0) {
 			const obj = jsonSuccess('Hoster Created');
 			hoster.uuid = v4();
-			await database.getHoster.createHoster(hoster);
+			await database.getHoster.create(hoster);
 			obj.hoster = hoster;
 			res.json(obj);
 		} else {
@@ -37,25 +37,25 @@ const update = async (req, res, next) => {
 	} else {
 		const hoster = validation.value;
 		const obj = jsonSuccess('Hoster Updated');
-		await database.getHoster.updateHoster({ UUID: id, unique: true }, hoster);
+		await database.getHoster.update({ UUID: id, unique: true }, hoster);
 		obj.hoster = hoster;
 		res.json(obj);
 	}
 };
 
 const list = async (req, res, next) => {
-	const hosters = await database.getHoster.getHoster({});
+	const hosters = await database.getHoster.get({});
 	res.json(hosters);
 };
 
 const remove = async (req, res, next) => {
 	const id = req.params.id;
-	const result = await database.getHoster.getHoster({
+	const result = await database.getHoster.get({
 		UUID: id,
 		unique: true,
 	});
 	if(result.length > 0) {
-		await database.getHoster.deleteHoster({UUID: id});
+		await database.getHoster.delete({UUID: id});
 		res.json(jsonSuccess('Hoster successfully deleted!'));
 	} else {
 		res.json(jsonError('Hoster does not exist!'));

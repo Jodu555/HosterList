@@ -13,14 +13,14 @@ const create = async (req, res, next) => {
 		res.json(jsonError(validation.error.details[0].message));
 	} else {
 		const service = validation.value;
-		const result = await database.getService.getService({
+		const result = await database.getService.get({
 			...service,
 			unique: true,
 		});
 		if (result.length == 0) {
 			const obj = jsonSuccess('Service Created');
 			service.uuid = v4();
-			await database.getService.createService(service);
+			await database.getService.create(service);
 			obj.service = service;
 			res.json(obj);
 		} else {
@@ -37,25 +37,25 @@ const update = async (req, res, next) => {
 	} else {
 		const service = validation.value;
 		const obj = jsonSuccess('Service Updated');
-		await database.getService.updateService({ UUID: id, unique: true }, service);
+		await database.getService.update({ UUID: id, unique: true }, service);
 		obj.service = service;
 		res.json(obj);
 	}
 };
 
 const list = async (req, res, next) => {
-	const service = await database.getService.getService({});
+	const service = await database.getService.get({});
 	res.json(service);
 };
 
 const remove = async (req, res, next) => {
 	const id = req.params.id;
-	const result = await database.getService.getService({
+	const result = await database.getService.get({
 		UUID: id,
 		unique: true,
 	});
 	if(result.length > 0) {
-		await database.getService.deleteService({UUID: id});
+		await database.getService.delete({UUID: id});
 		res.json(jsonSuccess('Service successfully deleted!'));
 	} else {
 		res.json(jsonError('Service does not exist!'));

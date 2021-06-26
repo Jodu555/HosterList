@@ -18,14 +18,14 @@ const register = async (req, res, next) => {
         const search = {...user}; //Spreading to disable the reference
         delete search.password;
         search.unique = true;
-        const result = await database.getAuth.getUser(search);
+        const result = await database.getAuth.get(search);
 
         if(result.length == 0) {
             const obj = jsonSuccess('Registered');
             const token = generateVerificationToken();
             user.verificationToken = token;
             user.uuid = v4();
-            await database.getAuth.createUser(user);
+            await database.getAuth.create(user);
             sendVerificationMessage(user.username, user.email, token);
     
             delete user.password;
@@ -44,7 +44,7 @@ const login = async (req, res, next) => {
         res.json(jsonError(validation.error.details[0].message));
     } else {
         const user = validation.value;
-        const result = await database.getAuth.getUser({...user, unique: true});
+        const result = await database.getAuth.get({...user, unique: true});
         if(result.length > 0) {
             const obj = jsonSuccess('Successfully logged In');
             const token = v4();
@@ -60,13 +60,13 @@ const login = async (req, res, next) => {
 
 const emailValidation = async (req, res, next) => {
     const token = req.params.token;
-    const result = await database.getAuth.getUser({
+    const result = await database.getAuth.get({
         unique: true,
         verificationToken: token,
         verified: 'false',
     });
     if(result.length > 0) {
-        const user = await database.getAuth.updateUser({uuid: result[0].UUID}, {verified: 'true', verificationToken: ''});
+        const user = await database.getAuth.update({uuid: result[0].UUID}, {verified: 'true', verificationToken: ''});
         const response = jsonSuccess('Valid Token! Account verified!');
         response.user = user[0];
         delete response.user.password;
