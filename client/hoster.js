@@ -10,14 +10,6 @@ async function load() {
 	loadServicesTable(services);
 }
 
-function getURLParam(param) {
-	const url = new URL(window.location.href);
-	const value = url.searchParams.get(param);
-	return value;
-}
-
-
-
 async function getCurrentHoster() {
 	const response = await fetch(API_URL + 'hoster/get/' + uuid, {
 		method: 'GET',
