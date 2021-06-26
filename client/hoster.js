@@ -1,5 +1,6 @@
 let currentHoster = {};
 const uuid = getURLParam('uuid');
+const addServiceForm = document.getElementById('addServiceForm');
 
 load();
 async function load() {
@@ -14,6 +15,8 @@ function getURLParam(param) {
 	const value = url.searchParams.get(param);
 	return value;
 }
+
+
 
 async function getCurrentHoster() {
 	const response = await fetch(API_URL + 'hoster/get/' + uuid, {
@@ -52,7 +55,6 @@ async function getServices() {
 }
 
 function loadServicesTable(data) {
-	console.log(data);
 
 	let i = 0;
 	data.forEach((service) => {

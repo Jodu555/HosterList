@@ -38,7 +38,8 @@ async function loadHosters() {
 			'auth-token': 'DEV-TOKEN-SECRET',
 		},
 	});
-	const json = await response.json();
+	let json = await response.json();
+	json = json.hosters;
 	let i = 0;
 	json.forEach((hoster) => {
 		i++;
