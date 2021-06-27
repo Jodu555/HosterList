@@ -2,13 +2,51 @@ let currentHoster = {};
 const uuid = getURLParam('uuid');
 const addServiceForm = document.getElementById('addServiceForm');
 
+addServiceForm.addEventListener('submit', async (event) => {
+	event.preventDefault();
+	var data = new FormData(addServiceForm);
+	const obj = formDataToObject(data)
+
+	obj.hoster_UUID = uuid;
+	obj.upgrade_possibillity = obj.upgrade_possibillity ? obj.upgrade_possibillity : 'no';
+	obj.uptime_percentage = obj.uptime_percentage + '%';
+	obj.testPeriod = obj.start + '  -  ' + obj.end;
+	removeKeyFromObject(obj, "start");
+	removeKeyFromObject(obj, "end");
+
+	console.log(obj);
+
+	await fetch(API_URL + 'service/create', {
+		method: 'POST',
+		headers: {
+			'auth-token': 'DEV-TOKEN-SECRET',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(obj),
+	});
+	loadServices();
+
+    $('#createModal').modal('hide');
+    var myModal = new bootstrap.Modal(document.getElementById('createModal'), {
+        keyboard: false
+    })
+    myModal.hide()
+	
+})
+
 load();
 async function load() {
 	await getCurrentHoster();
     document.getElementById('hosterName').innerText = currentHoster.name;
+	loadServices();
+}
+
+async function loadServices() {
 	const services = await getServices();
 	loadServicesTable(services);
 }
+
+
 
 async function getCurrentHoster() {
 	const response = await fetch(API_URL + 'hoster/get/' + uuid, {
