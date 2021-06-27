@@ -2,8 +2,7 @@ const mysql = require('mysql');
 const ThingDatabase = require('./thingDatabase');
 class Database {
 	connection = null;
-
-	constructor() {}
+	firstly = true;
 
 	connect() {
 		this.connection = mysql.createConnection({
@@ -13,10 +12,22 @@ class Database {
 			database: process.env.DB_DATABASE,
 		});
 		this.connection.connect();
-		//Setup all databases here
-		this.authDatabase = new ThingDatabase('accounts', 'Auth', this, this.connection);
-		this.hosterDatabase = new ThingDatabase('hoster', 'Hoster', this, this.connection);
-		this.serviceDatabase = new ThingDatabase('services', 'Service', this, this.connection);
+
+		this.connection.on('error', (error) => {
+			console.log('Database error', error);
+			if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+				this.reconnect();
+			} else {
+				throw error;
+			}
+		});
+		if (this.firstly) {
+			this.firstly = !this.firstly;
+			//Setup all databases here
+			this.authDatabase = new ThingDatabase('accounts', 'Auth', this, this.connection);
+			this.hosterDatabase = new ThingDatabase('hoster', 'Hoster', this, this.connection);
+			this.serviceDatabase = new ThingDatabase('services', 'Service', this, this.connection);
+		}
 	}
 
 	disconnect() {

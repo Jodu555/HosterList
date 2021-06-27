@@ -13,6 +13,7 @@ const create = async (req, res, next) => {
 		res.json(jsonError(validation.error.details[0].message));
 	} else {
 		const service = validation.value;
+		//TODO: Check if hoster_UUID exists
 		const result = await database.getService.get({
 			...service,
 			unique: true,

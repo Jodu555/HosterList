@@ -18,6 +18,7 @@ function getUser(token) {
 }
 
 function authentication(req, res, next) {
+	//TODO: Integrate a permission system with the url: req.originalUrl and the ip: req._remoteAddress
 	const token = req.headers['auth-token'];
 	if (token) {
 		if (getUser(token)) {
