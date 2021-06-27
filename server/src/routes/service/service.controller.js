@@ -13,17 +13,24 @@ const create = async (req, res, next) => {
 		res.json(jsonError(validation.error.details[0].message));
 	} else {
 		const service = validation.value;
-		//TODO: Check if hoster_UUID exists
 		const result = await database.getService.get({
 			...service,
 			unique: true,
 		});
 		if (result.length == 0) {
-			const obj = jsonSuccess('Service Created');
-			service.uuid = v4();
-			await database.getService.create(service);
-			obj.service = service;
-			res.json(obj);
+			const hosterResult = await database.getHoster.get({
+				UUID: service.hoster_UUID,
+				unique: true,
+			});
+			if(hosterResult > 0) {
+				const obj = jsonSuccess('Service Created');
+				service.uuid = v4();
+				await database.getService.create(service);
+				obj.service = service;
+				res.json(obj);
+			} else {
+				res.json(jsonError('Hoster UUID does not exist!'));
+			}
 		} else {
 			res.json(jsonError('Service already exists'));
 		}
