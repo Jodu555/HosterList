@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3100/';
+const API_URL = window.location.hostname == 'localhost' || window.location.hostname == '127.0.0.1' ? 'http://localhost:3100/' : 'http://api.hoster-info.de';
 
 let html = `<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 <div class="container-fluid">
