@@ -1,8 +1,9 @@
 const addHosterForm = document.getElementById('addHosterForm');
 
 checkLogged();
-
 loadHosters();
+
+function alert(message) {}
 
 addHosterForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
@@ -11,7 +12,7 @@ addHosterForm.addEventListener('submit', async (event) => {
 	await fetch(API_URL + 'hoster/create', {
 		method: 'POST',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(formDataToObject(data)),
@@ -26,45 +27,71 @@ addHosterForm.addEventListener('submit', async (event) => {
 });
 
 async function deleteHoster(uuid) {
-	await fetch(API_URL + 'hoster/delete/' + uuid, {
+	const response = await fetch(API_URL + 'hoster/delete/' + uuid, {
 		method: 'GET',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 		},
 	});
-	loadHosters();
+	const json = await response.json();
+	if (json.success) {
+		loadHosters();
+	} else {
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
+	}
 }
 
 async function loadHosters() {
 	const response = await fetch(API_URL + 'hoster/list', {
 		method: 'GET',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 		},
 	});
 	let json = await response.json();
-	json = json.hosters;
-	let i = 0;
+	if (json.success) {
+		json = json.hosters;
+		let i = 0;
 
-	for (const hoster of json) {
-		i++;
-		hoster.id = i;
-		hoster.name = `<a href="hoster.html?uuid=${hoster.UUID}">${hoster.name}</a>`;
-		hoster.services = await getServices(hoster.UUID);
-		hoster.delete = `<button class="btn btn-danger" onclick="deleteHoster('${hoster.UUID}')">Delete</button>`;
+		for (const hoster of json) {
+			i++;
+			hoster.id = i;
+			hoster.name = `<a href="hoster.html?uuid=${hoster.UUID}">${hoster.name}</a>`;
+			hoster.services = await getServices(hoster.UUID);
+			hoster.delete = `<button class="btn btn-danger" onclick="deleteHoster('${hoster.UUID}')">Delete</button>`;
+		}
+		await loadTable(json);
+	} else {
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
 	}
-	await loadTable(json);
 }
 
 async function getServices(hosterUUID) {
 	const response = await fetch(API_URL + 'service/list/' + hosterUUID, {
 		method: 'GET',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 		},
 	});
 	let json = await response.json();
-	return json.services.length;
+	if (json.success) {
+		return json.services.length;
+	} else {
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
+		return 0;
+	}
 }
 
 let initial = true;

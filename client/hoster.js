@@ -4,6 +4,8 @@ const addServiceForm = document.getElementById('addServiceForm');
 
 checkLogged();
 
+function alert(message) {}
+
 addServiceForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
 	var data = new FormData(addServiceForm);
@@ -16,16 +18,24 @@ addServiceForm.addEventListener('submit', async (event) => {
 	removeKeyFromObject(obj, 'start');
 	removeKeyFromObject(obj, 'end');
 
-	await fetch(API_URL + 'service/create', {
+	const response = await fetch(API_URL + 'service/create', {
 		method: 'POST',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(obj),
 	});
-	loadServices();
-
+	const json = await response.json();
+	if (json.success) {
+		loadServices();
+	} else {
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
+	}
 	$('#createModal').modal('hide');
 	var myModal = new bootstrap.Modal(document.getElementById('createModal'), {
 		keyboard: false,
@@ -51,14 +61,18 @@ async function deleteService(uuid) {
 	const response = await fetch(API_URL + 'service/delete/' + uuid, {
 		method: 'GET',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 		},
 	});
 	const json = await response.json();
 	if (json.success) {
 		loadServices();
 	} else {
-		console.log('Error: ' + json.message);
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
 	}
 }
 
@@ -94,14 +108,18 @@ async function getCurrentHoster() {
 	const response = await fetch(API_URL + 'hoster/get/' + uuid, {
 		method: 'GET',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 		},
 	});
 	const json = await response.json();
 	if (json.success) {
 		currentHoster = json.hoster;
 	} else {
-		console.log('Error: ' + json.message);
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
 	}
 }
 
@@ -110,7 +128,7 @@ async function getServices() {
 	const response = await fetch(API_URL + 'service/list', {
 		method: 'GET',
 		headers: {
-			'auth-token': 'DEV-TOKEN-SECRET',
+			'auth-token': getCookie('auth-token'),
 		},
 	});
 	const json = await response.json();
@@ -121,7 +139,11 @@ async function getServices() {
 			}
 		});
 	} else {
-		console.log('Error: ' + json.message);
+		if (json.message.includes('auth-token')) {
+			deleteCookie('auth-token');
+		} else {
+			alert('Error: ' + json.message);
+		}
 	}
 	return services;
 }
