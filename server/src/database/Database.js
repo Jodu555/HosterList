@@ -15,7 +15,7 @@ class Database {
 
 		this.connection.on('error', (error) => {
 			console.log('Database error', error);
-			if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+			if (error.code === 'PROTOCOL_CONNECTION_LOST') {
 				this.reconnect();
 			} else {
 				throw error;
