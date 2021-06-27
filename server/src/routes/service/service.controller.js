@@ -22,7 +22,7 @@ const create = async (req, res, next) => {
 				UUID: service.hoster_UUID,
 				unique: true,
 			});
-			if(hosterResult > 0) {
+			if(hosterResult.length > 0) {
 				const obj = jsonSuccess('Service Created');
 				service.uuid = v4();
 				await database.getService.create(service);
