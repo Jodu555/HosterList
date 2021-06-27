@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3100/'
+const API_URL = 'http://localhost:3100/';
 
 document.getElementById(
 	'nav'
@@ -15,11 +15,15 @@ document.getElementById(
                 <a class="nav-link active" href="list.html">Hosters</a>
             </li>
         </ul>
-        <form class="d-flex">
-            <a href="profile.html" class="btn my-2 my-sm-0 text-white" style="margin-right: 25px;">{{username}}</a>
-            <button class="btn btn-danger my-2 my-sm-0">Logout</button>
-        </form>
-    </div>
+`;
+
+if (getCookie('auth-token')) {
+	document.getElementById('nav').innerHTML += `<form class="d-flex">
+    <a href="profile.html" class="btn my-2 my-sm-0 text-white" style="margin-right: 25px;">{{username}}</a>
+    <button class="btn btn-danger my-2 my-sm-0">Logout</button>
+</form>`;
+}
+
+document.getElementById('nav').innerHTML += `</div>
 </div>
 </nav>`;
-

@@ -68,8 +68,6 @@ function viewService(uuid) {
 			service = ser;
 		}
 	});
-	console.log(service);
-	console.log(document.getElementById('view_service_name'));
 	document.getElementById('view_service_name_title').innerText = service.name;
 	document.getElementById('view_service_type').innerText = service.type;
 	document.getElementById('view_service_name').innerText = service.name;
@@ -87,8 +85,6 @@ function viewService(uuid) {
 		neoElem.textContent = data;
 		neofetch_container.appendChild(neoElem);
 	});
-
-	console.log();
 	$('#viewModal').modal('show');
 }
 
