@@ -2,6 +2,8 @@ let currentHoster = {};
 const uuid = getURLParam('uuid');
 const addServiceForm = document.getElementById('addServiceForm');
 
+checkLogged();
+
 addServiceForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
 	var data = new FormData(addServiceForm);

@@ -1,5 +1,7 @@
 const addHosterForm = document.getElementById('addHosterForm');
 
+checkLogged();
+
 loadHosters();
 
 addHosterForm.addEventListener('submit', async (event) => {
