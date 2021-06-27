@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const https = require('https');
 const cors = require('cors');
@@ -34,7 +35,11 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3100;
 if (process.env.https) {
-	https.createServer({}, app).listen(3100, () => {
+	const sslProperties = {
+		key: fs.readFileSync('server.key'),
+		cert: fs.readFileSync('server.cert'),
+	};
+	https.createServer(sslProperties, app).listen(3100, () => {
 		console.log(`Express App Listening on ${PORT}`);
 	});
 } else {
