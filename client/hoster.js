@@ -44,6 +44,22 @@ async function loadServices() {
 	loadServicesTable(services);
 }
 
+async function deleteService(uuid) {
+	console.log('Delete: ' + uuid);
+	const response = await fetch(API_URL + 'service/delete/' + uuid, {
+		method: 'GET',
+		headers: {
+			'auth-token': 'DEV-TOKEN-SECRET',
+		},
+	});
+	const json = await response.json();
+	if (json.success) {
+		loadServices();
+	} else {
+		console.log('Error: ' + json.message);
+	}
+}
+
 function viewService(uuid) {
 	const neofetch_container = document.getElementById('view_service_neofetch_container');
 	let service;
@@ -62,6 +78,8 @@ function viewService(uuid) {
 	document.getElementById('view_service_upgrade').innerText = service.upgrade_possibillity;
 	document.getElementById('view_service_uptime').innerText = service.uptime_percentage;
 	document.getElementById('view_service_period').innerText = service.testPeriod;
+
+	neofetch_container.innerHTML = '';
 
 	service.neofetch_data.forEach((data) => {
 		const neoElem = document.createElement('p');
