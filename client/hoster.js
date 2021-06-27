@@ -45,7 +45,32 @@ async function loadServices() {
 }
 
 function viewService(uuid) {
-	console.log('VIEW: ' + uuid);
+	const neofetch_container = document.getElementById('view_service_neofetch_container');
+	let service;
+	services.forEach((ser) => {
+		if (ser.UUID == uuid) {
+			service = ser;
+		}
+	});
+	console.log(service);
+	console.log(document.getElementById('view_service_name'));
+	document.getElementById('view_service_name_title').innerText = service.name;
+	document.getElementById('view_service_type').innerText = service.type;
+	document.getElementById('view_service_name').innerText = service.name;
+	document.getElementById('view_service_virtualisierung').innerText = service.virtualisierung;
+	document.getElementById('view_service_swap').innerText = service.swap_RAM;
+	document.getElementById('view_service_upgrade').innerText = service.upgrade_possibillity;
+	document.getElementById('view_service_uptime').innerText = service.uptime_percentage;
+	document.getElementById('view_service_period').innerText = service.testPeriod;
+
+	service.neofetch_data.forEach((data) => {
+		const neoElem = document.createElement('p');
+		neoElem.style.marginBottom = '0rem';
+		neoElem.textContent = data;
+		neofetch_container.appendChild(neoElem);
+	});
+
+	console.log();
 	$('#viewModal').modal('show');
 }
 
@@ -89,6 +114,7 @@ function loadServicesTable(data) {
 	let i = 0;
 	data.forEach((service) => {
 		service.id = ++i;
+		service.neofetch_data = JSON.parse(service.neofetch_data);
 		service.view = `<button class="btn btn-primary" onclick="viewService('${service.UUID}')">View</button>`;
 		service.delete = `<button class="btn btn-danger" onclick="deleteService('${service.UUID}')">Delete</button>`;
 	});
