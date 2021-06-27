@@ -1,5 +1,6 @@
 const { jsonSuccess, jsonError } = require('../../utils/jsonMessages');
 const { serviceSchema, serviceUpdateSchema } = require('../../database/schemas');
+const { parse } = require('../../utils/neofetchParser');
 const { v4 } = require('uuid');
 
 let database;
@@ -25,6 +26,8 @@ const create = async (req, res, next) => {
 			if(hosterResult.length > 0) {
 				const obj = jsonSuccess('Service Created');
 				service.uuid = v4();
+				service.neofetch_data = parse(service.neofetch_data);
+				service.neofetch_data = JSON.stringify(service.neofetch_data);
 				await database.getService.create(service);
 				obj.service = service;
 				res.json(obj);
@@ -58,6 +61,14 @@ const list = async (req, res, next) => {
 	res.json(obj);
 };
 
+const listByHoster = async (req, res, next) => {
+	const id = req.params.hosterID;
+	const service = await database.getService.get({hoster_UUID: id});
+	const obj = jsonSuccess('Services Loaded');
+	obj.services = service;
+	res.json(obj);
+};
+
 const remove = async (req, res, next) => {
 	const id = req.params.id;
 	const result = await database.getService.get({
@@ -77,5 +88,6 @@ module.exports = {
 	create,
 	update,
 	list,
+	listByHoster,
 	remove
 };

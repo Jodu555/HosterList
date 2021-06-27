@@ -5,7 +5,7 @@ const addServiceForm = document.getElementById('addServiceForm');
 addServiceForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
 	var data = new FormData(addServiceForm);
-	
+
 	const obj = formDataToObject(data);
 	obj.hoster_UUID = uuid;
 	obj.upgrade_possibillity = obj.upgrade_possibillity ? obj.upgrade_possibillity : 'no';
@@ -38,10 +38,15 @@ async function load() {
 	document.getElementById('hosterName').innerText = currentHoster.name;
 	loadServices();
 }
-
+let services = null;
 async function loadServices() {
-	const services = await getServices();
+	services = await getServices();
 	loadServicesTable(services);
+}
+
+function viewService(uuid) {
+	console.log('VIEW: ' + uuid);
+	$('#viewModal').modal('show');
 }
 
 async function getCurrentHoster() {
