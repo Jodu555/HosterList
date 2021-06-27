@@ -39,7 +39,7 @@ if (process.env.https) {
 		key: fs.readFileSync('server.key'),
 		cert: fs.readFileSync('server.cert'),
 	};
-	https.createServer(sslProperties, app).listen(3100, () => {
+	https.createServer(sslProperties, app).listen(PORT, () => {
 		console.log(`Express App Listening on ${PORT}`);
 	});
 } else {
