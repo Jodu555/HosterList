@@ -16,13 +16,14 @@ let html = `<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 `;
 
 if (getCookie('auth-token')) {
-    let username = getCookie('auth-token');
-	html += `<div class="d-flex">
-    <a href="profile.html" class="btn my-2 my-sm-0 text-white" style="margin-right: 25px;">${username}</a>
-    <button class="btn btn-danger my-2 my-sm-0" onclick="logout()">Logout</button>
-</div></div>
-</div>
-</nav>`;
+    let username = getCookie('username');
+	html += `   <div class="d-flex">
+                    <a href="#" class="btn my-2 my-sm-0 text-white" style="margin-right: 25px;">${username}</a>
+                    <button class="btn btn-danger my-2 my-sm-0" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>`;
 } else {
 	html += `</div>
     </div>

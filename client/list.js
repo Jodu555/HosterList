@@ -1,9 +1,18 @@
 const addHosterForm = document.getElementById('addHosterForm');
+const alertElem = document.getElementById('alert');
+alertElem.style.display = 'none';
 
 checkLogged();
 loadHosters();
 
-function alert(message) {}
+function alert(message) {
+	alertElem.style.display = '';
+	document.getElementById('alert-message').innerHTML = message;
+
+	setTimeout(() => {
+		alertElem.style.display = 'none';
+	}, 10000);
+}
 
 addHosterForm.addEventListener('submit', async (event) => {
 	event.preventDefault();

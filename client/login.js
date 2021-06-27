@@ -28,6 +28,7 @@ loginForm.addEventListener('submit', async (event) => {
 
     if(json.success) {
         setCookie('auth-token', json.token, 30);
+        setCookie('username', obj.username, 30);
         sendto('list.html');
         loginForm.reset();
     } else {

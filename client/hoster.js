@@ -1,10 +1,19 @@
 let currentHoster = {};
 const uuid = getURLParam('uuid');
 const addServiceForm = document.getElementById('addServiceForm');
+const alertElem = document.getElementById('alert');
+alertElem.style.display = 'none';
 
 checkLogged();
 
-function alert(message) {}
+function alert(message) {
+	alertElem.style.display = '';
+	document.getElementById('alert-message').innerHTML = message;
+
+	setTimeout(() => {
+		alertElem.style.display = 'none';
+	}, 10000);
+}
 
 addServiceForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
