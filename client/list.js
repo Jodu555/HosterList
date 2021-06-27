@@ -4,6 +4,7 @@ loadHosters();
 
 addHosterForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
+	
 	var data = new FormData(addHosterForm);
 	await fetch(API_URL + 'hoster/create', {
 		method: 'POST',
@@ -19,6 +20,7 @@ addHosterForm.addEventListener('submit', async (event) => {
     })
     myModal.hide()
 	loadHosters();
+	addHosterForm.reset();
 });
 
 async function deleteHoster(uuid) {

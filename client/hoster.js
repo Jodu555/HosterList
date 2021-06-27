@@ -5,16 +5,14 @@ const addServiceForm = document.getElementById('addServiceForm');
 addServiceForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
 	var data = new FormData(addServiceForm);
-	const obj = formDataToObject(data)
-
+	
+	const obj = formDataToObject(data);
 	obj.hoster_UUID = uuid;
 	obj.upgrade_possibillity = obj.upgrade_possibillity ? obj.upgrade_possibillity : 'no';
 	obj.uptime_percentage = obj.uptime_percentage + '%';
 	obj.testPeriod = obj.start + '  -  ' + obj.end;
-	removeKeyFromObject(obj, "start");
-	removeKeyFromObject(obj, "end");
-
-	console.log(obj);
+	removeKeyFromObject(obj, 'start');
+	removeKeyFromObject(obj, 'end');
 
 	await fetch(API_URL + 'service/create', {
 		method: 'POST',
@@ -26,18 +24,18 @@ addServiceForm.addEventListener('submit', async (event) => {
 	});
 	loadServices();
 
-    $('#createModal').modal('hide');
-    var myModal = new bootstrap.Modal(document.getElementById('createModal'), {
-        keyboard: false
-    })
-    myModal.hide()
-	
-})
+	$('#createModal').modal('hide');
+	var myModal = new bootstrap.Modal(document.getElementById('createModal'), {
+		keyboard: false,
+	});
+	myModal.hide();
+	addServiceForm.reset();
+});
 
 load();
 async function load() {
 	await getCurrentHoster();
-    document.getElementById('hosterName').innerText = currentHoster.name;
+	document.getElementById('hosterName').innerText = currentHoster.name;
 	loadServices();
 }
 
@@ -45,8 +43,6 @@ async function loadServices() {
 	const services = await getServices();
 	loadServicesTable(services);
 }
-
-
 
 async function getCurrentHoster() {
 	const response = await fetch(API_URL + 'hoster/get/' + uuid, {
@@ -85,12 +81,11 @@ async function getServices() {
 }
 
 function loadServicesTable(data) {
-
 	let i = 0;
 	data.forEach((service) => {
 		service.id = ++i;
-        service.view = `<button class="btn btn-primary" onclick="viewService('${service.UUID}')">View</button>`;
-        service.delete = `<button class="btn btn-danger" onclick="deleteService('${service.UUID}')">Delete</button>`;
+		service.view = `<button class="btn btn-primary" onclick="viewService('${service.UUID}')">View</button>`;
+		service.delete = `<button class="btn btn-danger" onclick="deleteService('${service.UUID}')">Delete</button>`;
 	});
 
 	$table = $('#table');
@@ -133,11 +128,11 @@ function loadServicesTable(data) {
 				field: 'testPeriod',
 				title: 'Test Period',
 			},
-            {
+			{
 				field: 'view',
 				title: 'View',
 			},
-            {
+			{
 				field: 'delete',
 				title: 'Delete',
 			},
