@@ -1,4 +1,5 @@
 const express = require('express');
+const https = require('https');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
@@ -32,6 +33,12 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3100;
-app.listen(PORT, async () => {
-	console.log(`Express App Listening on ${PORT}`);
-});
+if (process.env.https) {
+	https.createServer({}, app).listen(3100, () => {
+		console.log(`Express App Listening on ${PORT}`);
+	});
+} else {
+	app.listen(PORT, async () => {
+		console.log(`Express App Listening on ${PORT}`);
+	});
+}
