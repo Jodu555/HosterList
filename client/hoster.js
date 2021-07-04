@@ -66,21 +66,31 @@ async function loadServices() {
 }
 
 async function deleteService(uuid) {
-	console.log('Delete: ' + uuid);
-	const response = await fetch(API_URL + 'service/delete/' + uuid, {
-		method: 'GET',
-		headers: {
-			'auth-token': getCookie('auth-token'),
-		},
+	const { isConfirmed: confirmed } = await Swal.fire({
+		title: 'Error!',
+		text: 'Do you really want to delete the Hoster?',
+		icon: 'warning',
+		showCancelButton: true,
+		cancelButtonText: 'No im stupid!',
+		confirmButtonText: 'Yes im sure!'
 	});
-	const json = await response.json();
-	if (json.success) {
-		loadServices();
-	} else {
-		if (json.message.includes('auth-token')) {
-			deleteCookie('auth-token');
+	if (confirmed) {
+		console.log('Delete: ' + uuid);
+		const response = await fetch(API_URL + 'service/delete/' + uuid, {
+			method: 'GET',
+			headers: {
+				'auth-token': getCookie('auth-token'),
+			},
+		});
+		const json = await response.json();
+		if (json.success) {
+			loadServices();
 		} else {
-			alert('Error: ' + json.message);
+			if (json.message.includes('auth-token')) {
+				deleteCookie('auth-token');
+			} else {
+				alert('Error: ' + json.message);
+			}
 		}
 	}
 }
