@@ -1,4 +1,4 @@
-const API_URL = window.location.hostname == 'localhost' || window.location.hostname == '127.0.0.1' ? 'http://localhost:3100/' : 'http://api.hoster-info.de';
+const API_URL = window.location.hostname == 'localhost' || window.location.hostname == '127.0.0.1' ? 'http://localhost:3100/' : 'https://45.88.109.32:1771/';
 
 let html = `<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 <div class="container-fluid">
@@ -17,7 +17,7 @@ let html = `<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
 if (getCookie('auth-token')) {
     let username = getCookie('username');
-	html += `   <div class="d-flex">
+    html += `   <div class="d-flex">
                     <a href="#" class="btn my-2 my-sm-0 text-white" style="margin-right: 25px;">${username}</a>
                     <button class="btn btn-danger my-2 my-sm-0" onclick="logout()">Logout</button>
                 </div>
@@ -25,14 +25,14 @@ if (getCookie('auth-token')) {
         </div>
     </nav>`;
 } else {
-	html += `</div>
+    html += `</div>
     </div>
     </nav>`;
 }
 document.getElementById('nav').innerHTML = html;
 
 function checkLogged() {
-    if(!getCookie('auth-token')) {
+    if (!getCookie('auth-token')) {
         sendto('index.html');
     }
 }
