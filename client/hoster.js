@@ -41,6 +41,7 @@ addServiceForm.addEventListener('submit', async (event) => {
 	} else {
 		if (json.message.includes('auth-token')) {
 			deleteCookie('auth-token');
+			checkLogged();
 		} else {
 			alert('Error: ' + json.message);
 		}
@@ -88,6 +89,7 @@ async function deleteService(uuid) {
 		} else {
 			if (json.message.includes('auth-token')) {
 				deleteCookie('auth-token');
+				checkLogged();
 			} else {
 				alert('Error: ' + json.message);
 			}
@@ -136,6 +138,7 @@ async function getCurrentHoster() {
 	} else {
 		if (json.message.includes('auth-token')) {
 			deleteCookie('auth-token');
+			checkLogged();
 		} else {
 			alert('Error: ' + json.message);
 		}
@@ -160,6 +163,7 @@ async function getServices() {
 	} else {
 		if (json.message.includes('auth-token')) {
 			deleteCookie('auth-token');
+			checkLogged();
 		} else {
 			alert('Error: ' + json.message);
 		}

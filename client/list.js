@@ -57,6 +57,7 @@ async function deleteHoster(uuid) {
 		} else {
 			if (json.message.includes('auth-token')) {
 				deleteCookie('auth-token');
+				checkLogged();
 			} else {
 				alert('Error: ' + json.message);
 			}
@@ -87,6 +88,7 @@ async function loadHosters() {
 	} else {
 		if (json.message.includes('auth-token')) {
 			deleteCookie('auth-token');
+			checkLogged();
 		} else {
 			alert('Error: ' + json.message);
 		}
