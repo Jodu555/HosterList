@@ -6,11 +6,15 @@ tokens.set('DEV-TOKEN-SECRET', {})
 
 function addToken(token, user) {
 	tokens.forEach((value, key) => {
-        if(JSON.stringify(value) == JSON.stringify(user)) {
-            tokens.delete(key);
-        }
+		if (JSON.stringify(value) == JSON.stringify(user)) {
+			tokens.delete(key);
+		}
 	});
 	tokens.set(token, user);
+}
+
+function removeToken(token) {
+	tokens.delete(token);
 }
 
 function getUser(token) {
@@ -37,6 +41,7 @@ function authentication(req, res, next) {
 
 module.exports = {
 	addToken,
+	removeToken,
 	getUser,
 	authentication,
 };
