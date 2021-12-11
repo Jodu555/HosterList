@@ -6,6 +6,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Hoster Liste</title>
 		<link rel="stylesheet" href="https://bootswatch.com/5/zephyr/bootstrap.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css"
+			integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
 	</head>
 
 	<body>
@@ -14,61 +21,92 @@
 		<div class="container mt-4">
 			<div class="row">
 				<div class="col-5">
-                    <div id="alert-login" class="alert alert-dismissible">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong id="alert-type-login">Error:</strong> <span id="alert-message-login"></span>
-                    </div>
+					<div id="alert-login" class="alert alert-dismissible">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<strong id="alert-type-login">Error:</strong> <span id="alert-message-login"></span>
+					</div>
 					<div class="card border-dark mb-3">
 						<div class="card-header">Login</div>
 						<div class="card-body">
 							<h4 class="card-title">Login to the Hoster List</h4>
-                            <hr>
+							<hr />
 							<form class="card-text" id="loginForm">
-                                <fieldset>
-                                    <div class="form-group">
-                                      <label for="username" class="form-label mt-4">Username</label>
-                                      <input type="text" class="form-control" id="usernamelogin" name="username" placeholder="Enter Username">
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="password" class="form-label mt-4">Password</label>
-                                      <input type="password" class="form-control" name="password" id="passwordlogin" placeholder="Password">
-                                    </div>
-                                    
-                                    <button type="submit" class="mt-4 btn btn-primary">Submit</button>
-                                </fieldset>
-                            </form>
+								<fieldset>
+									<div class="form-group">
+										<label for="username" class="form-label mt-4">Username</label>
+										<input
+											type="text"
+											class="form-control"
+											id="usernamelogin"
+											name="username"
+											placeholder="Enter Username"
+										/>
+									</div>
+									<div class="form-group">
+										<label for="password" class="form-label mt-4">Password</label>
+										<input
+											type="password"
+											class="form-control"
+											name="password"
+											id="passwordlogin"
+											placeholder="Password"
+										/>
+									</div>
+
+									<button type="submit" class="mt-4 btn btn-primary">Submit</button>
+								</fieldset>
+							</form>
 						</div>
 					</div>
 				</div>
 				<div class="col-2"></div>
 				<div class="col-5">
-                    <div id="alert-register" class="alert alert-dismissible">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong id="alert-type-register">Error:</strong> <span id="alert-message-register"></span>
-                    </div>
+					<div id="alert-register" class="alert alert-dismissible">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<strong id="alert-type-register">Error:</strong>
+						<span id="alert-message-register"></span>
+					</div>
 					<div class="card border-dark mb-3">
 						<div class="card-header">Register</div>
 						<div class="card-body">
 							<h4 class="card-title">Register to the Hoster List</h4>
-                            <hr>
+							<hr />
 							<form class="card-text" id="registerForm">
-                                <fieldset>
-                                    <div class="form-group">
-                                      <label for="username" class="form-label mt-4">Username</label>
-                                      <input type="text" class="form-control" id="usernameregister" name="username" placeholder="Enter Username">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="Email" class="form-label mt-4">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
-                                      </div>
-                                    <div class="form-group">
-                                      <label for="password" class="form-label mt-4">Password</label>
-                                      <input type="password" class="form-control" name="password" id="passwordregister" placeholder="Password">
-                                    </div>
-                                    
-                                    <button type="submit" class="mt-4 btn btn-primary">Submit</button>
-                                </fieldset>
-                            </form>
+								<fieldset>
+									<div class="form-group">
+										<label for="username" class="form-label mt-4">Username</label>
+										<input
+											type="text"
+											class="form-control"
+											id="usernameregister"
+											name="username"
+											placeholder="Enter Username"
+										/>
+									</div>
+									<div class="form-group">
+										<label for="Email" class="form-label mt-4">Email</label>
+										<input
+											type="email"
+											class="form-control"
+											id="email"
+											name="email"
+											placeholder="Enter Email"
+										/>
+									</div>
+									<div class="form-group">
+										<label for="password" class="form-label mt-4">Password</label>
+										<input
+											type="password"
+											class="form-control"
+											name="password"
+											id="passwordregister"
+											placeholder="Password"
+										/>
+									</div>
+
+									<button type="submit" class="mt-4 btn btn-primary">Submit</button>
+								</fieldset>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -85,6 +123,6 @@
 		></script>
 		<script src="http://rooti.jodu555.de/docs/utils/utils.js"></script>
 		<script src="index.js"></script>
-        <script src="login.js"></script>
+		<script src="login.js"></script>
 	</body>
 </html>
